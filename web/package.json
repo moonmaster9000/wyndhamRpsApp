@@ -1,0 +1,19 @@
+{
+  "name": "web",
+  "version": "0.0.0",
+  "dependencies": {
+    "rps": "file:../rps",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "watchify": "latest",
+    "babel-preset-es2015": "latest",
+    "babel-preset-react": "latest",
+    "babelify": "latest",
+    "jasmine": "latest"
+  },
+  "scripts": {
+    "compile-test": "watchify spec/webSpec.js -o bundled/compiledSpec.js -t [ babelify --presets [ es2015 react ] ]"
+  }
+}
