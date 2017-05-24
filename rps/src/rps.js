@@ -1,12 +1,12 @@
-function play(p1, p2, ui){
-    determineOutcome()
+function playRound(p1Throw, p2Throw, ui){
+    determineResult()
 
-    function determineOutcome(){
-        if (invalid(p1) || invalid(p2)) {
-            ui.invalid()
-        } else if (tie()){
-            ui.tie()
-        } else if (p1Wins()
+    function determineResult(){
+        if (isInvalid(p1Throw) || isInvalid(p2Throw)) {
+            ui.isInvalid()
+        } else if (isTie()){
+            ui.isTie()
+        } else if (doesP1Win()
         ){
             ui.displayWinner("p1")
         } else {
@@ -14,23 +14,23 @@ function play(p1, p2, ui){
         }
     }
 
-    function invalid(t) {
+    function isInvalid(t) {
         const VALID_THROWS = ["rock", "paper", "scissors"]
 
         return !VALID_THROWS.includes(t)
     }
 
-    function p1Wins() {
-        return p1 === "rock" && p2 === "scissors" ||
-            p1 === "scissors" && p2 === "paper" ||
-            p1 === "paper" && p2 === "rock"
+    function doesP1Win() {
+        return p1Throw === "rock" && p2Throw === "scissors" ||
+            p1Throw === "scissors" && p2Throw === "paper" ||
+            p1Throw === "paper" && p2Throw === "rock"
     }
 
-    function tie() {
-        return p1 === p2
+    function isTie() {
+        return p1Throw === p2Throw
     }
 }
 
 module.exports = {
-    play
+    playRound
 }

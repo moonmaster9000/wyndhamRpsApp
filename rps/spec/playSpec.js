@@ -1,94 +1,94 @@
-const { play } = require("../src/rps")
+const { playRound } = require("../src/rps")
 
-describe("play", function () {
+describe("playRound rules", function () {
     let ui
 
-    describe("win scenarios", function () {
+    describe("win rules", function () {
         beforeEach(function () {
             ui = jasmine.createSpyObj("ui", ["displayWinner"])
         })
 
         it("rock versus scissors", function () {
-            play("rock", "scissors", ui)
+            playRound("rock", "scissors", ui)
 
             expect(ui.displayWinner).toHaveBeenCalledWith("p1")
         })
 
         it("scissors versus rock", function () {
-            play("scissors", "rock", ui)
+            playRound("scissors", "rock", ui)
 
             expect(ui.displayWinner).toHaveBeenCalledWith("p2")
 
         })
 
         it("scissors versus paper", function () {
-            play("scissors", "paper", ui)
+            playRound("scissors", "paper", ui)
 
             expect(ui.displayWinner).toHaveBeenCalledWith("p1")
         })
 
         it("paper versus scissors", function () {
-            play("paper", "scissors", ui)
+            playRound("paper", "scissors", ui)
 
             expect(ui.displayWinner).toHaveBeenCalledWith("p2")
         })
 
         it("paper versus rock", function () {
-            play("paper", "rock", ui)
+            playRound("paper", "rock", ui)
 
             expect(ui.displayWinner).toHaveBeenCalledWith("p1")
         })
 
         it("rock versus paper", function () {
-            play("rock", "paper", ui)
+            playRound("rock", "paper", ui)
 
             expect(ui.displayWinner).toHaveBeenCalledWith("p2")
         })
     })
 
-    describe("tie scenarios", function () {
+    describe("tie rules", function () {
         beforeEach(function () {
             ui = jasmine.createSpyObj("ui", ["tie"])
         })
 
         it("rock v. rock", function () {
-            play("rock", "rock", ui)
+            playRound("rock", "rock", ui)
 
             expect(ui.tie).toHaveBeenCalled()
         })
 
         it("paper v. paper", function () {
-            play("paper", "paper", ui)
+            playRound("paper", "paper", ui)
 
             expect(ui.tie).toHaveBeenCalled()
         })
 
         it("scissors v. scissors", function () {
-            play("scissors", "scissors", ui)
+            playRound("scissors", "scissors", ui)
 
             expect(ui.tie).toHaveBeenCalled()
         })
     })
 
-    describe("invalid scenarios", function () {
+    describe("invalid rules", function () {
         beforeEach(function () {
             ui = jasmine.createSpyObj("ui", ["invalid"])
         })
 
         it("invalid throw versus valid throw", function () {
-            play(Math.random(), "rock", ui)
+            playRound(Math.random(), "rock", ui)
 
             expect(ui.invalid).toHaveBeenCalled()
         })
 
         it("valid throw versus invalid throw", function () {
-            play("rock", Math.random(), ui)
+            playRound("rock", Math.random(), ui)
 
             expect(ui.invalid).toHaveBeenCalled()
         })
 
         it("invalid throw versus the same invalid throw", function () {
-            play("sailboat", "sailboat", ui)
+            playRound("sailboat", "sailboat", ui)
 
             expect(ui.invalid).toHaveBeenCalled()
         })
