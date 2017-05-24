@@ -3,9 +3,9 @@ function playRound(p1Throw, p2Throw, ui){
 
     function determineResult(){
         if (isInvalid(p1Throw) || isInvalid(p2Throw)) {
-            ui.isInvalid()
+            ui.invalid()
         } else if (isTie()){
-            ui.isTie()
+            ui.tie()
         } else if (doesP1Win()
         ){
             ui.displayWinner("p1")
