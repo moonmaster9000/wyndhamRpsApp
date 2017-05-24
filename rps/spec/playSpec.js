@@ -1,17 +1,4 @@
-function play(p1, p2, ui){
-    if (!["rock", "paper", "scissors"].includes(p1) || !["rock", "paper", "scissors"].includes(p2)) {
-        ui.invalid()
-    } else if (p1 === p2){
-        ui.tie()
-    } else if (p1 === "rock"     && p2 === "scissors" ||
-        p1 === "scissors" && p2 === "paper"    ||
-        p1 === "paper"    && p2 === "rock"
-    ){
-        ui.displayWinner("p1")
-    } else {
-        ui.displayWinner("p2")
-    }
-}
+const { play } = require("../src/rps")
 
 describe("play", function () {
     let ui
