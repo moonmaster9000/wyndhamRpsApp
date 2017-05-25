@@ -1,4 +1,6 @@
-function playRound(p1Throw, p2Throw, ui){
+const Round = require("./Round")
+
+function playRound(p1Throw, p2Throw, ui, roundRepo){
     determineResult()
 
     function determineResult(){
@@ -8,6 +10,7 @@ function playRound(p1Throw, p2Throw, ui){
             ui.tie()
         } else if (doesP1Win()
         ){
+            roundRepo.save(new Round(p1Throw, p2Throw, "p1"))
             ui.displayWinner("p1")
         } else {
             ui.displayWinner("p2")
@@ -32,5 +35,6 @@ function playRound(p1Throw, p2Throw, ui){
 }
 
 module.exports = {
-    playRound
+    playRound,
+    Round
 }
