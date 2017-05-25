@@ -1,5 +1,7 @@
 const { playRound, Round } = require("../src/rps")
 
+const FakeRoundRepo = require("./FakeRoundRepo")
+
 function history(ui, roundRepo){
     if (roundRepo.isEmpty()){
         ui.noRounds()
@@ -8,7 +10,7 @@ function history(ui, roundRepo){
     }
 }
 
-fdescribe("history", function () {
+describe("history", function () {
     describe("when rounds have been played", function () {
         it("then it sends the rounds to the UI", function () {
             const ui = jasmine.createSpyObj("ui", ["rounds", "displayWinner", "tie", "invalid"])
@@ -29,7 +31,6 @@ fdescribe("history", function () {
                 new Round("rock", "sailboat", "invalid")
             ])
         })
-
     })
 
     describe("when no rounds have been played", function () {
@@ -44,46 +45,33 @@ fdescribe("history", function () {
     })
 })
 
+function roundRepoContract(roundRepoClass){
+    describe("round Repo", function () {
+        let roundRepo
 
-const FakeRoundRepo = function(){
-    let rounds = []
+        beforeEach(function () {
+            roundRepo = new roundRepoClass()
+        })
 
-    this.isEmpty = function(){
-        return rounds.length === 0
-    }
+        it("is empty when nothing has been saved", function () {
+            expect(roundRepo.isEmpty()).toBe(true)
+        })
 
-    this.save = function(round){
-        rounds.push(round)
-    }
+        it("is not empty when rounds have been saved", function () {
+            roundRepo.save(new Round())
 
-    this.findAll = function(){
-        return rounds
-    }
+            expect(roundRepo.isEmpty()).toBe(false)
+        })
+
+        it("returns all rounds that have been saved", function () {
+            let round = new Round(Math.random())
+
+            roundRepo.save(round)
+
+            expect(roundRepo.findAll()).toEqual([round])
+        })
+
+    })
 }
 
-describe("round Repo", function () {
-    let roundRepo
-
-    beforeEach(function () {
-        roundRepo = new FakeRoundRepo()
-    })
-
-    it("is empty when nothing has been saved", function () {
-        expect(roundRepo.isEmpty()).toBe(true)
-    })
-
-    it("is not empty when rounds have been saved", function () {
-        roundRepo.save(new Round())
-
-        expect(roundRepo.isEmpty()).toBe(false)
-    })
-
-    it("returns all rounds that have been saved", function () {
-        let round = new Round(Math.random())
-
-        roundRepo.save(round)
-
-        expect(roundRepo.findAll()).toEqual([round])
-    })
-
-})
+roundRepoContract(FakeRoundRepo)

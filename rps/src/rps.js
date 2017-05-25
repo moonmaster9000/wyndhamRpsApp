@@ -5,16 +5,30 @@ function playRound(p1Throw, p2Throw, ui, roundRepo){
 
     function determineResult(){
         if (isInvalid(p1Throw) || isInvalid(p2Throw)) {
-            ui.invalid()
+            handleInvalidResult()
         } else if (isTie()){
-            ui.tie()
+            handleTieResult()
         } else if (doesP1Win()
         ){
-            roundRepo.save(new Round(p1Throw, p2Throw, "p1"))
-            ui.displayWinner("p1")
+            handleWinner("p1")
         } else {
-            ui.displayWinner("p2")
+            handleWinner("p2")
         }
+    }
+
+    function handleInvalidResult() {
+        roundRepo.save(new Round(p1Throw, p2Throw, "invalid"))
+        ui.invalid()
+    }
+
+    function handleTieResult() {
+        roundRepo.save(new Round(p1Throw, p2Throw, "tie"))
+        ui.tie()
+    }
+
+    function handleWinner(winner) {
+        roundRepo.save(new Round(p1Throw, p2Throw, winner))
+        ui.displayWinner(winner)
     }
 
     function isInvalid(t) {
