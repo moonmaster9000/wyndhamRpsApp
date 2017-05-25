@@ -13,11 +13,7 @@ describe("history", function () {
         it("then it sends the rounds to the UI", function () {
             const ui = jasmine.createSpyObj("ui", ["rounds", "displayWinner"])
 
-            const roundRepo = {
-                isEmpty(){},
-                findAll(){},
-                save(){}
-            }
+            const roundRepo = new FakeRoundRepo()
 
             playRound("rock", "scissors", ui, roundRepo)
 
@@ -39,4 +35,48 @@ describe("history", function () {
             expect(ui.noRounds).toHaveBeenCalled()
         })
     })
+})
+
+
+const FakeRoundRepo = function(){
+    let rounds = []
+
+    this.isEmpty = function(){
+        return rounds.length === 0
+    }
+
+    this.save = function(round){
+        rounds.push(round)
+    }
+
+    this.findAll = function(){
+        return rounds
+    }
+}
+
+describe("round Repo", function () {
+    let roundRepo
+
+    beforeEach(function () {
+        roundRepo = new FakeRoundRepo()
+    })
+
+    it("is empty when nothing has been saved", function () {
+        expect(roundRepo.isEmpty()).toBe(true)
+    })
+
+    it("is not empty when rounds have been saved", function () {
+        roundRepo.save(new Round())
+
+        expect(roundRepo.isEmpty()).toBe(false)
+    })
+
+    it("returns all rounds that have been saved", function () {
+        let round = new Round(Math.random())
+
+        roundRepo.save(round)
+
+        expect(roundRepo.findAll()).toEqual([round])
+    })
+
 })
