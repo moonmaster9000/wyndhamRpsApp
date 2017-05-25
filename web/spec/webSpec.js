@@ -21,7 +21,7 @@ class PlayForm extends React.Component {
     }
 
     handlePlayFormSubmit(){
-        this.props.playRound(this.state.p1Throw, this.state.p2Throw, this)
+        this.props.rps.playRound(this.state.p1Throw, this.state.p2Throw, this)
     }
 
     captureInput(e){
@@ -145,7 +145,7 @@ describe("play form", function () {
 
     function mountApp(playRound) {
         ReactDOM.render(
-            <PlayForm playRound={playRound}/>,
+            <PlayForm rps={{playRound}}/>,
             domFixture
         )
     }
