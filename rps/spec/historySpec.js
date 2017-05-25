@@ -1,28 +1,20 @@
-const { playRound, Round } = require("../src/rps")
+const { RPS, Round } = require("../src/rps")
 
 const FakeRoundRepo = require("./FakeRoundRepo")
-
-function history(ui, roundRepo){
-    if (roundRepo.isEmpty()){
-        ui.noRounds()
-    } else {
-        ui.rounds(roundRepo.findAll())
-    }
-}
 
 describe("history", function () {
     describe("when rounds have been played", function () {
         it("then it sends the rounds to the UI", function () {
-            const ui = jasmine.createSpyObj("ui", ["rounds", "displayWinner", "tie", "invalid"])
-
+            const ui        = jasmine.createSpyObj("ui", ["rounds", "displayWinner", "tie", "invalid"])
             const roundRepo = new FakeRoundRepo()
+            const rps       = new RPS(roundRepo)
 
-            playRound("rock", "scissors", ui, roundRepo)
-            playRound("scissors", "rock", ui, roundRepo)
-            playRound("rock", "rock", ui, roundRepo)
-            playRound("rock", "sailboat", ui, roundRepo)
+            rps.playRound("rock", "scissors", ui)
+            rps.playRound("scissors", "rock", ui)
+            rps.playRound("rock", "rock", ui)
+            rps.playRound("rock", "sailboat", ui)
 
-            history(ui, roundRepo)
+            rps.history(ui)
 
             expect(ui.rounds).toHaveBeenCalledWith([
                 new Round("rock", "scissors", "p1"),
@@ -35,10 +27,11 @@ describe("history", function () {
 
     describe("when no rounds have been played", function () {
         it("then it tells the UI noRounds", function () {
-            const ui = jasmine.createSpyObj("ui", ["noRounds"])
             const roundRepo = new FakeRoundRepo()
+            const rps = new RPS(roundRepo)
+            const ui = jasmine.createSpyObj("ui", ["noRounds"])
 
-            history(ui, roundRepo)
+            rps.history(ui)
 
             expect(ui.noRounds).toHaveBeenCalled()
         })
