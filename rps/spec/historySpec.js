@@ -8,19 +8,25 @@ function history(ui, roundRepo){
     }
 }
 
-describe("history", function () {
-    fdescribe("when rounds have been played", function () {
+fdescribe("history", function () {
+    describe("when rounds have been played", function () {
         it("then it sends the rounds to the UI", function () {
-            const ui = jasmine.createSpyObj("ui", ["rounds", "displayWinner"])
+            const ui = jasmine.createSpyObj("ui", ["rounds", "displayWinner", "tie", "invalid"])
 
             const roundRepo = new FakeRoundRepo()
 
             playRound("rock", "scissors", ui, roundRepo)
+            playRound("scissors", "rock", ui, roundRepo)
+            playRound("rock", "rock", ui, roundRepo)
+            playRound("rock", "sailboat", ui, roundRepo)
 
             history(ui, roundRepo)
 
             expect(ui.rounds).toHaveBeenCalledWith([
-                new Round("rock", "scissors", "p1")
+                new Round("rock", "scissors", "p1"),
+                new Round("scissors", "rock", "p2"),
+                new Round("rock", "rock", "tie"),
+                new Round("rock", "sailboat", "invalid")
             ])
         })
 
@@ -29,8 +35,9 @@ describe("history", function () {
     describe("when no rounds have been played", function () {
         it("then it tells the UI noRounds", function () {
             const ui = jasmine.createSpyObj("ui", ["noRounds"])
+            const roundRepo = new FakeRoundRepo()
 
-            history(ui)
+            history(ui, roundRepo)
 
             expect(ui.noRounds).toHaveBeenCalled()
         })
