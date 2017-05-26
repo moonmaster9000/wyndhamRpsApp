@@ -25,21 +25,6 @@ const RPS = function(roundRepo){
             }
         }
 
-        function handleInvalidResult() {
-            roundRepo.save(new Round(p1Throw, p2Throw, "invalid"))
-            ui.invalid()
-        }
-
-        function handleTieResult() {
-            roundRepo.save(new Round(p1Throw, p2Throw, "tie"))
-            ui.tie()
-        }
-
-        function handleWinner(winner) {
-            roundRepo.save(new Round(p1Throw, p2Throw, winner))
-            ui.displayWinner(winner)
-        }
-
         function isInvalid(t) {
             const VALID_THROWS = ["rock", "paper", "scissors"]
 
@@ -54,6 +39,25 @@ const RPS = function(roundRepo){
 
         function isTie() {
             return p1Throw === p2Throw
+        }
+
+        function handleInvalidResult() {
+            recordRound("invalid")
+            ui.invalid()
+        }
+
+        function handleTieResult() {
+            recordRound("tie")
+            ui.tie()
+        }
+
+        function handleWinner(winner) {
+            recordRound(winner)
+            ui.displayWinner(winner)
+        }
+
+        function recordRound(result) {
+            roundRepo.recordRound(new Round(p1Throw, p2Throw, result))
         }
     }
 
